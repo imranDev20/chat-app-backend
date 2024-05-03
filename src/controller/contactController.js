@@ -3,6 +3,7 @@ const User = require("../models/User");
 exports.getContacts = async (req, res) => {
   try {
     const userId = req.user.userId;
+    console.log(userId);
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 
