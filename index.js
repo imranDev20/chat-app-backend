@@ -4,6 +4,7 @@ require("dotenv").config();
 require("./src/config/dbConfig.js");
 // routes import
 const userRoutes = require("./src/routes/v1/userRoutes.js");
+const contactRoutes = require("./src/routes/v1/contactRoutes.js");
 
 const app = express();
 const http = require("http").createServer(app);
@@ -41,6 +42,7 @@ function generateRoomName(users) {
 }
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/contacts", contactRoutes);
 
 const port = process.env.PORT || 5000;
 http.listen(port, () => {
