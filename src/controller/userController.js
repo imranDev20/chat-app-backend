@@ -1,6 +1,7 @@
 const { generateToken } = require("../middleware/authMiddleware");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res) => {
   try {
@@ -83,5 +84,31 @@ exports.loginUser = async (req, res) => {
       message: "Internal server error",
       error: error.message,
     });
+  }
+};
+
+exports.verifyUser = async (req, res) => {
+  const { token } = req.body;
+  const JWT_SECRET = process.env.JWT_SECRET;
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    const userData = {
+      userId: decoded.userId,
+      name: decoded.name,
+      email: decoded.email,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Token is valid",
+      data: { token, ...userData },
+    });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(401)
+      .json({ success: false, message: "Invalid token", data: null });
   }
 };
